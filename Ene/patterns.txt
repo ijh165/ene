@@ -1,0 +1,7 @@
+(fuck|shit|bitch) -> I will terminate if you're going to be like that!
+(mother|mom|mommy) -> What makes you think of your mother?
+(father|dad|daddy) -> What makes you think of your father?
+(sad|depressed) -> What makes you sad?
+(hate) -> Hate is not a good thing
+%A% is %B%$->Why do you think that %A% is %B%?
+where is %X%->I don't know where %X% is. Perhaps you could search for %X% on google?
