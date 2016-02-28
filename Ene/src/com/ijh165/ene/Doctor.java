@@ -33,11 +33,7 @@ public class Doctor
         patternResponseVec = new ArrayList<>(128); //create empty list of large enough size initially
     }
 
-    //output the words
-    private void speak(final String words)
-    {
-        System.out.println(DOCTOR_STR + words);
-    }
+
 
     //check for placeholders in pattern, return a hash table which map these placeholders to their occurrence number
     private Hashtable<String,Integer> extractPlaceholders(final String pattern)
@@ -77,8 +73,8 @@ public class Doctor
         return true;
     }
 
-    //find matching patterns and return responses vector based on matching patterns (default response if no match)
-    public void respond(final String inputBuff)
+    //find matching patterns and return responses based on matching patterns (default response if no match)
+    public String respond(final String inputBuff)
     {
         List<String> responseVec = new ArrayList<>();
         boolean patternFound = false;
@@ -121,8 +117,8 @@ public class Doctor
         //if no pattern is found just print a random default response
         if(!patternFound) {
             Random rand = new Random();
-            speak(DEFAULT_RESPONSES[rand.nextInt(DEFAULT_RESPONSES.length)]);
-            return;
+            String defaultResponse = DEFAULT_RESPONSES[rand.nextInt(DEFAULT_RESPONSES.length)];
+            return defaultResponse;
         }
 
         //sort multiple responses (in case multiple patterns detected) and combine them to one response
@@ -134,18 +130,28 @@ public class Doctor
         }
 
         //print the response
-        speak(response);
+        return response;
     }
 
-    //greeting, goodbye, and no input responses
+    //print the words
+    public void speak(final String words)
+    {
+        System.out.println(DOCTOR_STR + words);
+    }
+
+    //greet the user
     public void greet()
     {
         speak(GREETING);
     }
+
+    //say goodbye to the user
     public void goodbye()
     {
         speak(GOODBYE);
     }
+
+    //print no input respond
     public void respondNoInput()
     {
         speak(NO_INPUT_RESPONSE);
