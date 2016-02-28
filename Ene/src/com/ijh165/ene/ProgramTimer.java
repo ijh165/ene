@@ -9,23 +9,32 @@ import java.util.TimerTask;
 public class ProgramTimer
 {
     private int milliseconds;
-    private Timer timer = new Timer();
-    private TimerTask task = new TimerTask() {
-        @Override
-        public void run() {
-            milliseconds++;
-        }
-    };
+    private Timer timer;
 
-    //start/stop
+    //start
     public void start()
     {
+        timer = new Timer();
+        TimerTask task = new TimerTask() {
+            @Override
+            public void run() {
+                milliseconds++;
+            }
+        };
         timer.scheduleAtFixedRate(task,1,1);
     }
+
+    //stop
     public void stop()
     {
         timer.cancel();
         timer.purge();
+    }
+
+    //reset
+    public void reset()
+    {
+        milliseconds = 0;
     }
 
     //getters

@@ -8,7 +8,7 @@ import java.util.Scanner;
 public class Patient
 {
     //constants
-    private static final String PROMPT_STR = ">>>> ";
+    private static final String PROMPT_STR = ">> ";
     private static final String EXIT_CMD = "exit";
 
     //buffer holding the user input
@@ -21,7 +21,8 @@ public class Patient
     }
 
     //prompts the user to type some input
-    public void promptInput() {
+    public void promptInput()
+    {
         System.out.print(PROMPT_STR);
         Scanner input = new Scanner(System.in);
         this.input = input.nextLine();
@@ -30,7 +31,7 @@ public class Patient
     //check if user wants to exit
     public boolean exitingProgram()
     {
-        return input.equals(EXIT_CMD);
+        return input.equalsIgnoreCase(EXIT_CMD);
     }
 
     //check if input is empty

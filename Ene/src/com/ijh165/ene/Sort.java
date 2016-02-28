@@ -7,7 +7,7 @@ import java.util.Arrays;
  */
 public class Sort
 {
-    public static void sort(String[] data)
+    public static void sortStrings(String[] data)
     {
         Arrays.sort(data);
     }

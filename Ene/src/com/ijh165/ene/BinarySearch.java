@@ -7,7 +7,7 @@ import java.util.Arrays;
  */
 public class BinarySearch
 {
-    public static int search(String[] data, String target)
+    public static int searchString(String[] data, String target)
     {
         return Arrays.binarySearch(data, target);
     }
