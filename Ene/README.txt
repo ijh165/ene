@@ -164,3 +164,26 @@ The program will write to these log files if there are any errors/timing violati
 -This means if the file I/O error is related to this file (this file goes missing in the way, etc),
 there's no other way of reporting so I just make the program exit if this is the case
 -If there is a file I/O error related to this particular file the program will just print "Exiting program..."
+
+*************************************************************************************************************************************
+
+Some notes about the timing
+
+The processing of the input actually takes less than a second however since it is a requirement to repeat
+the timing of commands 1000000 times it takes around 1 minute or more until the user can enter the next input.
+
+For example:
+
+Doctor: Hello.
+>> hi
+Doctor: How are you?
+
+In here you can see "How are you? is printed very fast.
+But after that the program will remain idle for 1 min or so for simulating and logging the timing violations to the log file... and then finally...
+
+Doctor: Hello.
+>> hi
+Doctor: How are you?
+>>
+
+*************************************************************************************************************************************

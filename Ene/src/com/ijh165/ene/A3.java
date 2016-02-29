@@ -181,7 +181,7 @@ public class A3
                     violationCtr++;
 
                     //debug stuffs
-                    System.out.println(timer.getTime());
+                    /*System.out.println(timer.getTime());*/
                 }
             }
 
