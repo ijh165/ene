@@ -1,25 +1,26 @@
+/**
+ * Filename: Doctor.java
+ * Description: This file contains the doctor class used to model a doctor and coordinate the doctor interactions
+ * Created by IvanJonathan on 2016-02-21.
+ */
+
 package com.ijh165.ene;
 
 import java.io.*;
 import java.util.*;
 import java.util.regex.*;
 
-/**
- * Created by IvanJonathan on 2016-02-21.
- */
 public class Doctor
 {
     //array index constants
     private static final int PATTERN_TOKEN = 0;
     private static final int RESPONSE_TOKEN = 1;
-    //file names constants
-    private static final String PATTERNS_FNAME = "patterns.txt";
-    private static final String LOAD_PATTERNS_FAIL_ERR = "Failed to load patterns. Make sure the pattern file \"patterns.txt\" exist!";
+
     //output text constants
     private static final String DOCTOR_STR = "Doctor: ";
     private static final String GREETING = "Hello! ^_^";
     private static final String GOODBYE = "Goodbye! Have a nice day! ^_^";
-    private static final String NO_INPUT_RESPONSE = "You didn't enter any input, please type again! ^_^";
+    private static final String NO_INPUT_RESPONSE = "You didn't enter any input, please type again!";
     private static final String[] DEFAULT_RESPONSES = {"I didn't quite get that.",
                                                     "I'm not sure I understand what you're saying.",
                                                     "Sorry, I didn't get that."};
@@ -30,10 +31,9 @@ public class Doctor
     //constructor
     public Doctor()
     {
+        super();
         patternResponseVec = new ArrayList<>(128); //create empty list of large enough size initially
     }
-
-
 
     //check for placeholders in pattern, return a hash table which map these placeholders to their occurrence number
     private Hashtable<String,Integer> extractPlaceholders(final String pattern)
@@ -41,36 +41,29 @@ public class Doctor
         Hashtable<String,Integer> placeholderHT = new Hashtable<>(pattern.length());
         Pattern p = Pattern.compile("%\\p{Alpha}%", Pattern.CASE_INSENSITIVE);
         Matcher m = p.matcher(pattern);
-        int count = 0;
+        int value = 0;
         while(m.find()) {
-            count++;
+            value++;
             String tmpStr = pattern.substring(m.start(),m.end());
-            placeholderHT.put(tmpStr, count);
+            placeholderHT.put(tmpStr, value);
         }
         return placeholderHT;
     }
 
     //open the pattern file and load the patterns and corresponding responses to the patternResponseVec (return true on success)
-    public boolean loadPatterns()
+    public void loadPatterns(String patternFilePath) throws IOException
     {
-        try {
-            FileReader fr = new FileReader(PATTERNS_FNAME);
-            BufferedReader br = new BufferedReader(fr);
-            String lineBuff = br.readLine();
-            while(lineBuff != null) {
-                if(lineBuff.length()>0) {
-                    String[] tokens = lineBuff.split("\\s->\\s");
-                    patternResponseVec.add(new PatternResponse(tokens[PATTERN_TOKEN], tokens[RESPONSE_TOKEN]));
-                }
-                lineBuff = br.readLine();
+        FileReader fr = new FileReader(patternFilePath);
+        BufferedReader br = new BufferedReader(fr);
+        String lineBuff = br.readLine();
+        while(lineBuff != null) {
+            if(lineBuff.length()>0) {
+                String[] tokens = lineBuff.split("\\s->\\s");
+                patternResponseVec.add(new PatternResponse(tokens[PATTERN_TOKEN], tokens[RESPONSE_TOKEN]));
             }
-            br.close();
+            lineBuff = br.readLine();
         }
-        catch(IOException e) {
-            System.out.println(LOAD_PATTERNS_FAIL_ERR);
-            return false;
-        }
-        return true;
+        br.close();
     }
 
     //find matching patterns and return responses based on matching patterns (default response if no match)
