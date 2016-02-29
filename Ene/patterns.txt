@@ -3,16 +3,18 @@
 \bmother\b|\bmom\b|\bmommy\b -> What makes you think of your mother?
 \bfather\b|\bdad\b|\bdaddy\b -> What makes you think of your father?
 \bsad\b|\bdepressed\b -> What makes you sad?
-\bhate\b|\bloathe\b|\bdetest\b|\bdespise\b -> Hate is not a good thing..
+\bhate\b|\bloathe\b|\bdetest\b|\bdespise\b -> Hate is not a good thing.
 \bstudy\b|\bstudying\b -> Well, I hate studying. Studying = student + dying.
-
-\bi\s(hate|=|loathe|=|detest)\s%X%\b -> What makes you hate %X%? Did %X% do anything wrong?
-
+\bi\shate\s%X%\b -> What makes you hate %X%? Did %X% do anything wrong?
+\bi\sloathe\s%X%\b -> What makes you loathe %X%? Did %X% do anything wrong?
+\bi\sdetest\s%X%\b -> What makes you detest %X%? Did %X% do anything wrong?
+\bi\sdespise\s%X%\b -> What makes you despise %X%? Did %X% do anything wrong?
 \bi\slike\s%X%\b -> What makes you like %X%? Does %X% interests you in a particular way?
 \bi\slove\s%X%\b -> Oh you're in love with %X% are you? Is %X% a person?
 \b%A%\sis\s%B%\b -> Why do you think that %A% is %B%?
 \b%A%\sis\snot\s%B%\b -> Why do you think that %A% is not %B%?
-\bwhat\sis\s%X%\b -> I don't know what %X% is. Perhaps you could search it on google?
-\bhow\scan\sI\sconfess\smy\slove\sto\s%X%\b -> Just ask %X% out!
+\bcan\syou\stell\sme\swhat\s%X%\sis\b -> Unfortunately, I don't know what %X% is. Perhaps you could search it on google?
+\bhow\scan\sI\sconfess\smy\slove\sto\s%X%\b -> Just ask %X% out already you big baby!
 \b%B%\shates\s%A%\b -> Really? Did %A% do anything wrong to %B%?
 \bi'm\sbad\sat\s%X%\b -> You should practice doing %X% a lot more! Go ask some friends for help! Or maybe %X% isn't your thing.
+\bi'm\sgood\sat\s%X%\b -> Meh I could do better.
