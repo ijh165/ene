@@ -1,12 +1,11 @@
+package com.ijh165.ene;
+
 /**
- * Filename: PatternResponse.java
- * Description: This file contains the pattern class used to store a pattern and the response. Note that I implement
+ * Class name: PatternResponse.java
+ * Description: This is the pattern class used to store a pattern and the response. Note that I implement
  *              this class as "PatternResponse" as Java already has a built in class named "Pattern".
  * Created by IvanJonathan on 2016-02-21.
  */
-
-package com.ijh165.ene;
-
 public class PatternResponse
 {
     //data

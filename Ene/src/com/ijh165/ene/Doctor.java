@@ -1,15 +1,14 @@
-/**
- * Filename: Doctor.java
- * Description: This file contains the doctor class used to model a doctor and coordinate the doctor interactions
- * Created by IvanJonathan on 2016-02-21.
- */
-
 package com.ijh165.ene;
 
 import java.io.*;
 import java.util.*;
 import java.util.regex.*;
 
+/**
+ * Class name: Doctor.java
+ * Description: This is the doctor class used to model a doctor and coordinate the doctor interactions
+ * Created by IvanJonathan on 2016-02-21.
+ */
 public class Doctor
 {
     //array index constants

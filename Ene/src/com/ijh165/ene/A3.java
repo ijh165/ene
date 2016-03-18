@@ -1,15 +1,14 @@
+package com.ijh165.ene;
+
+import java.io.*;
+
 /**
- * Filename: A3
+ * Class name: A3
  * Description: This is the class that contains the main method
  * Created by IvanJonathan on 2016-02-21.
  *
  * IMPORTANT: Please also take a look at the README.txt which contains file format and pattern documentation
  */
-
-package com.ijh165.ene;
-
-import java.io.*;
-
 public class A3
 {
     //constants
@@ -161,7 +160,7 @@ public class A3
             }
 
             //simulates input processing 1000000-1 times and check timing violations
-            for(int i = 1; i < 1000000; i++) {
+            /*for(int i = 1; i < 1000000; i++) {
                 //reset and start timer
                 timer.reset();
                 timer.start();
@@ -181,9 +180,9 @@ public class A3
                     violationCtr++;
 
                     //debug stuffs
-                    /*System.out.println(timer.getTime());*/
+                    *//*System.out.println(timer.getTime());*//*
                 }
-            }
+            }*/
 
             //write timing violations statistics
             FileWriter fw = new FileWriter(LOG_DIR + TIMING_LOG_FILENAME, true);

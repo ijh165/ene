@@ -1,11 +1,10 @@
-/**
- * Filename: SortChecker.java
- * Description: This file contains the sort checker class used to verify that the data is sorted at all times
- * Created by IvanJonathan on 2016-02-21.
- */
-
 package com.ijh165.ene;
 
+/**
+ * Class name: SortChecker.java
+ * Description: This is the sort checker class used to verify that the data is sorted at all times
+ * Created by IvanJonathan on 2016-02-21.
+ */
 public class SortChecker
 {
     //methods

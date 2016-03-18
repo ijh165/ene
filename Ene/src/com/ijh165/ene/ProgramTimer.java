@@ -1,15 +1,14 @@
-/**
- * Filename: ProgramTimer.java
- * Description: This file contains the timer class to do the timing. Note that I implemented this class as
- *              "ProgramTimer" as Java already has a built in class named Pattern.
- * Created by IvanJonathan on 2016-02-21.
- */
-
 package com.ijh165.ene;
 
 import java.util.Timer;
 import java.util.TimerTask;
 
+/**
+ * Filename: ProgramTimer.java
+ * Description: This is the timer class to do the timing. Note that I implemented this class as
+ *              "ProgramTimer" as Java already has a built in class named Pattern.
+ * Created by IvanJonathan on 2016-02-21.
+ */
 public class ProgramTimer
 {
     private int milliseconds;
