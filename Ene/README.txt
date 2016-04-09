@@ -13,19 +13,55 @@ Information about pattern and responses:
         <pattern> -> <response>
     where pattern is the pattern and response is the corresponding response.
 
+    CAUTION:
+    -Do not forget the spaces before and after "->"
+
     For example, take a look at the following:
         \bmother\b|\bmom\b|\bmommy\b -> What makes you think of your mother?
     -In here, "\bmother\b|\bmom\b|\bmommy\b" is the pattern and "What makes you think of your mother?" is the corresponding response
 
+    Explanation on weird characters ("\b" and "\s" both counts as 1 character not 2 characters!):
+    "|": the OR operator ("foo|bar" means contains the word foo or bar)
+    "\b": word boundary (the character that starts or ends a word)
+    "\s": white space (space, newline, tabs etc)
+    "%<any alphabetic character>%": placeholders (e.g. %X%)
+
     CAUTION:
-    -Do not forget the spaces before and after "->"
+    -Do not attempt to use the "|" operator for patterns with placeholders
+    -Do not use the weird characters ("\b", "\s", etc.) on responses. Only use these in patterns.
+    -I know that "|", "\b", and "\s" look a lot like java regex and you maybe tempted to use other java regex characters
+    but please do not use any other weird characters besides these 4, not even another java regex characters like "\d".
 
-    ===================================================================================================================
+    For example, take a look at the following pattern/response pair.
+        \bhate\b -> Hate is not a good thing.
+    -This line means for any input that contains the word "hate",
+    the program will print the response "Hate is not a good thing."
+    -"\bhate\b" means a word boundary, followed by the string "hate", followed by another word boundary
+    -If you just putting "hate" without the word boundaries the pattern will also match input like "dsara asdhatejaxzks"
+    which "asdhatejaxzks" is not actually the word "hate" but rather a string that has the substring "hate"
 
-    1.2 Pattern documentation
+    Another example with the OR operator "|":
+        \bhi\b|\bhello\b|\bhey\b -> How are you? What would you like to talk about today?
+    -This line means for any input that contains the word "hi", "hello", or "hey",
+    the program will print the response "How are you? What would you like to talk about today?"
+    -At this point you may be thinking why can't we just use "hi|hello|hey" and has to include the word boundary.
+    Well if I do that let's say the user enters "nothing" the response "How are you..." will also be produced because
+    "hi" is a substring of "nothing". The word boundary "\b" is actually used to prevent this from happening.
 
-    First of all, please keep in mind that these patterns are case insensitive
-    (only the patterns though! the responses are still case sensitive).
+    Last example with placeholders and "\s":
+        \bi\slove\s%X%\b -> Oh you're in love with %X% are you? Is %X% a person?
+    -This line means for any input that contains "I love %X%" where "%X%" is a any string,
+    the program will produce the output "Oh you're in love with %X% are you? Is %X% a person?"
+    where "%X%" is the original string typed by the user.
+    -For example if the user inputs "i love coding" the program will produce the response
+    "Oh you're in love with coding are you? Is coding a person?"
+
+    =================================================================================================================================
+
+    1.2 Pattern explanation
+
+    First of all, please keep in mind that these patterns are case insensitive.
+    Only the patterns though! the responses are still case sensitive.
 
     1. Angry pattern
     \bfuck\b|\bshit\b|\bbitch\b -> I will terminate if you're going to be like that!
@@ -107,42 +143,6 @@ Information about pattern and responses:
     \bi'm\sgood\sat\s%X%\b -> Meh I could do better.
     Description: Any sentence containing the string "i'm good at X" where X is a placeholder word
 
-    ===================================================================================================================
-
-    1.3 Explanation on the weird symbols...
-
-    These are what the weird characters ("\b","|",etc) actually mean:
-    1. |: the OR operator ("foo|bar" means contains the word foo or bar)
-    2. \b: word boundary (word delimiter)
-    3. \s: white space (space, newline, tabs etc)
-    4. %<any alphabetic character>%: placeholders (e.g. %X%)
-
-    For example, take a look at the following pattern/response pair.
-        \bhate\b -> Hate is not a good thing.
-    -This line means for any input that contains the word "hate",
-    the program will print the response "Hate is not a good thing."
-    -The pattern "\bhate\b" means a word boundary, followed by the string "hate", followed by another word boundary
-
-    Another example with the OR operator "|":
-        \bhi\b|\bhello\b|\bhey\b -> How are you? What would you like to talk about today?
-    -This line means for any input that contains the word "hi", "hello", or "hey",
-    the program will print the response "How are you? What would you like to talk about today?"
-    -At this point you may be thinking why can't we just use "hi|hello|hey" and has to include the word boundary.
-    Well if I do that let's say the user enters "nothing" the response "How are you..." will also be produced because
-    "hi" is a substring of "nothing". The word boundary "\b" is actually used to prevent this from happening.
-
-    Last example with placeholders and "\s":
-        \bi\slove\s%X%\b -> Oh you're in love with %X% are you? Is %X% a person?
-    -This line means for any input that contains "I love %X%" where "%X%" is a any string,
-    the program will produce the output "Oh you're in love with %X% are you? Is %X% a person?"
-    where "%X%" is the original string typed by the user.
-    -For example if the user inputs "i love coding" the program will produce the response
-    "Oh you're in love with coding are you? Is coding a person?"
-
-    CAUTION:
-    -Do not attempt to use the "|" operator for patterns with placeholders
-    -Do not use the weird characters ("\b", "\s", etc.) on responses. Only use these in patterns.
-
 *************************************************************************************************************************************
 
 Error/violation reporting and log files:
@@ -164,26 +164,5 @@ The program will write to these log files if there are any errors/timing violati
 -This means if the file I/O error is related to this file (this file goes missing in the way, etc),
 there's no other way of reporting so I just make the program exit if this is the case
 -If there is a file I/O error related to this particular file the program will just print "Exiting program..."
-
-*************************************************************************************************************************************
-
-Some notes about the timing
-
-The processing of the input actually takes less than a second however since it is a requirement to repeat
-the timing of commands 1000000 times it takes around 1 minute or more until the user can enter the next input.
-
-For example:
-
-Doctor: Hello.
->> hi
-Doctor: How are you?
-
-In here you can see "How are you? is printed very fast.
-But after that the program will remain idle for 1 min or so for simulating and logging the timing violations to the log file... and then finally...
-
-Doctor: Hello.
->> hi
-Doctor: How are you?
->>
 
 *************************************************************************************************************************************

@@ -4,47 +4,49 @@ import java.io.*;
 
 /**
  * Class name: A3
- * Description: This is the class that contains the main method
+ * Description: This is the class that contains the main method.
  * Created by IvanJonathan on 2016-02-21.
- *
- * IMPORTANT: Please also take a look at the README.txt which contains file format and pattern documentation
  */
 public class A3
 {
-    //constants
-    private static int TIME_CONSTRAINT = 5;
+    //time constraint and exit message
+    private static final long TIME_CONSTRAINT = 5;
     private static final String EXIT_MSG = "Exiting program...";
-    private static final String TIMING_VIOLATION_LOG_ENTRY = "---Timing violation detected! Input processing takes %s milliseconds!---";
-    private static final String VIOLATION_STATS_LOG_ENTRY = "-----%s out of 1000000 executions exceeds 5ms!-----";
-    private static final String LOAD_PATTERNS_FAIL_ERR = "Failed to load patterns. Make sure the pattern file \"patterns.txt\" exist!";
-    private static final String LOG_FILE_CREATION_ERR = "Failed to create log files";
-    private static final String WRITE_TIMING_LOG_ENTRY_ERR = "Failed to write timing log entries. Make sure the file \"timing_log.txt\" still exist!";
 
-    //file and dir name constants
-    private static final String LOG_DIR = "log/";
-    private static final String PATTERNS_FILENAME = "patterns.txt";
-    private static final String IO_ERROR_LOG_FILENAME = "io_error_log.txt";
-    private static final String TIMING_LOG_FILENAME = "timing_log.txt";
+    //log entries
+    private static final String TIMING_VIOLATION_LOG_ENTRY = "---Timing violation detected! Input processing takes %s milliseconds!---";
+    private static final String TIMING_VIOLATION_STATS_LOG_ENTRY = "-----%s out of 1000000 simulations exceeds 5ms!-----";
+    private static final String LOAD_PATTERNS_FAIL_ERR = "Failed to load patterns. Make sure the pattern file \"patterns.txt\" exist!";
+    private static final String LOG_FILE_CREATION_ERR = "Failed to create log files.";
+    private static final String WRITE_TIMING_LOG_ENTRY_ERR = "Failed to write timing log entries.";
+
+    //paths
+    private static final String LOG_DIR = System.getProperty("user.dir") + "/log";
+    private static final String PATTERN_FILE_PATH = System.getProperty("user.dir") + "/patterns.txt";
+    private static final String IO_ERROR_LOG_FILE_PATH = LOG_DIR + "/io_error_log.txt";
+    private static final String TIMING_ERR_LOG_FILE_PATH = LOG_DIR + "/timing_violation_log.txt";
 
     //program objects
     private static Doctor doctor;
     private static Patient patient;
-    private static ProgramTimer timer;
+    private static Timer timer;
 
     public static void main(String[] args)
     {
         //initialize objects
         doctor = new Doctor();
         patient = new Patient();
-        timer = new ProgramTimer();
+        timer = new Timer();
+
         //initialize log files
         initLogFiles();
+
         //load patterns (exit program with error stat code if fail)
         try {
-            doctor.loadPatterns(PATTERNS_FILENAME);
+            doctor.loadPatterns(PATTERN_FILE_PATH);
         }
         catch(IOException e) {
-            logFileIOerror(LOAD_PATTERNS_FAIL_ERR);
+            logFileIOError(LOAD_PATTERNS_FAIL_ERR);
             System.out.println(EXIT_MSG);
             System.exit(1);
         }
@@ -68,17 +70,19 @@ public class A3
                 break;
             }
 
+            //actual command processing
+            doctor.simulationOff();
+
             //reset and start timer
             timer.reset();
             timer.start();
             //input processing
             String input = patient.getInput();
-            String output = doctor.respond(input);
-            doctor.speak(output);
+            doctor.respond(input);
             //stop timer
             timer.stop();
 
-            //check for timing violations and log it (includes simulation)
+            //check for timing violations and log it (includes simulations)
             logTimingViolation(input);
         }
 
@@ -95,7 +99,7 @@ public class A3
                 f.mkdir();
             }
             //create timing log file (or replace if already exist)
-            f = new File(LOG_DIR + TIMING_LOG_FILENAME);
+            f = new File(TIMING_ERR_LOG_FILE_PATH);
             if (f.exists()) {
                 PrintWriter pw = new PrintWriter(f);
                 pw.print("");
@@ -105,7 +109,7 @@ public class A3
                 f.createNewFile();
             }
             //create io error log file (or replace if already exist)
-            f = new File(LOG_DIR + IO_ERROR_LOG_FILENAME);
+            f = new File(IO_ERROR_LOG_FILE_PATH);
             if (f.exists()) {
                 PrintWriter pw = new PrintWriter(f);
                 pw.print("");
@@ -116,18 +120,18 @@ public class A3
             }
         }
         catch(IOException e) {
-            logFileIOerror(LOG_FILE_CREATION_ERR);
+            logFileIOError(LOG_FILE_CREATION_ERR);
             System.out.println(EXIT_MSG);
             System.exit(1);
         }
     }
 
     //file IO logging
-    public static void logFileIOerror(String ioLogEntry)
+    public static void logFileIOError(String ioLogEntry)
     {
         try {
             //write entry logs to it
-            FileWriter fw = new FileWriter(LOG_DIR + IO_ERROR_LOG_FILENAME, true);
+            FileWriter fw = new FileWriter(IO_ERROR_LOG_FILE_PATH, true);
             PrintWriter pw = new PrintWriter(fw);
             pw.println(ioLogEntry);
             pw.close();
@@ -146,21 +150,21 @@ public class A3
             int violationCtr = 0;
 
             //check for timing violation once
-            if(timer.getTime() > TIME_CONSTRAINT) {
+            if(timer.getRecordedTime() > TIME_CONSTRAINT) {
                 //write timing violation entries
-                FileWriter fw = new FileWriter(LOG_DIR + TIMING_LOG_FILENAME, true);
+                FileWriter fw = new FileWriter(TIMING_ERR_LOG_FILE_PATH, true);
                 PrintWriter pw = new PrintWriter(fw);
-                pw.println(String.format(TIMING_VIOLATION_LOG_ENTRY, timer.getTime()));
+                pw.println(String.format(TIMING_VIOLATION_LOG_ENTRY, timer.getRecordedTime()));
                 pw.close();
                 //increment counter
                 violationCtr++;
-
-                //debug stuffs
-                /*System.out.println(timer.getTime());*/
             }
 
+            //just a simulation
+            doctor.simulationOn();
+
             //simulates input processing 1000000-1 times and check timing violations
-            /*for(int i = 1; i < 1000000; i++) {
+            for(int i = 1; i < 1000000; i++) {
                 //reset and start timer
                 timer.reset();
                 timer.start();
@@ -170,28 +174,30 @@ public class A3
                 timer.stop();
 
                 //check for timing violation
-                if(timer.getTime() > TIME_CONSTRAINT) {
+                if(timer.getRecordedTime() > TIME_CONSTRAINT) {
                     //write timing violation entries
-                    FileWriter fw = new FileWriter(LOG_DIR + TIMING_LOG_FILENAME, true);
+                    FileWriter fw = new FileWriter(TIMING_ERR_LOG_FILE_PATH, true);
                     PrintWriter pw = new PrintWriter(fw);
-                    pw.println(String.format(TIMING_VIOLATION_LOG_ENTRY, timer.getTime()));
+                    pw.println(String.format(TIMING_VIOLATION_LOG_ENTRY, timer.getRecordedTime()));
                     pw.close();
                     //increment counter
                     violationCtr++;
-
-                    //debug stuffs
-                    *//*System.out.println(timer.getTime());*//*
                 }
-            }*/
+            }
 
             //write timing violations statistics
-            FileWriter fw = new FileWriter(LOG_DIR + TIMING_LOG_FILENAME, true);
+            FileWriter fw = new FileWriter(TIMING_ERR_LOG_FILE_PATH, true);
             PrintWriter pw = new PrintWriter(fw);
-            pw.println(String.format(VIOLATION_STATS_LOG_ENTRY, violationCtr));
+            pw.println(String.format(TIMING_VIOLATION_STATS_LOG_ENTRY, violationCtr));
             pw.close();
         }
         catch(IOException e) {
-            logFileIOerror(WRITE_TIMING_LOG_ENTRY_ERR);
+            logFileIOError(WRITE_TIMING_LOG_ENTRY_ERR);
+            System.out.println(EXIT_MSG);
+            System.exit(1);
+        }
+        catch(Exception e) {
+            System.out.println(e.getMessage());
             System.out.println(EXIT_MSG);
             System.exit(1);
         }

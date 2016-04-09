@@ -6,7 +6,7 @@ import java.util.regex.*;
 
 /**
  * Class name: Doctor.java
- * Description: This is the doctor class used to model a doctor and coordinate the doctor interactions
+ * Description: This is the doctor class used to model a doctor and coordinate the doctor interactions.
  * Created by IvanJonathan on 2016-02-21.
  */
 public class Doctor
@@ -24,29 +24,20 @@ public class Doctor
                                                     "I'm not sure I understand what you're saying.",
                                                     "Sorry, I didn't get that."};
 
-    //list of patterns
+    //attributes
     private List<PatternResponse> patternResponseVec;
+    private String prevInput;
+    private String prevResponse;
+    private boolean isSimulation;
 
     //constructor
     public Doctor()
     {
         super();
-        patternResponseVec = new ArrayList<>(128); //create empty list of large enough size initially
-    }
-
-    //check for placeholders in pattern, return a hash table which map these placeholders to their occurrence number
-    private Hashtable<String,Integer> extractPlaceholders(final String pattern)
-    {
-        Hashtable<String,Integer> placeholderHT = new Hashtable<>(pattern.length());
-        Pattern p = Pattern.compile("%\\p{Alpha}%", Pattern.CASE_INSENSITIVE);
-        Matcher m = p.matcher(pattern);
-        int value = 0;
-        while(m.find()) {
-            value++;
-            String tmpStr = pattern.substring(m.start(),m.end());
-            placeholderHT.put(tmpStr, value);
-        }
-        return placeholderHT;
+        patternResponseVec = new ArrayList<>();
+        prevInput = null;
+        prevResponse = null;
+        isSimulation = false;
     }
 
     //open the pattern file and load the patterns and corresponding responses to the patternResponseVec (return true on success)
@@ -65,70 +56,99 @@ public class Doctor
         br.close();
     }
 
-    //find matching patterns and return responses based on matching patterns (default response if no match)
-    public String respond(final String inputBuff)
+    //check for placeholders in pattern, return a hash table which map these placeholders to their occurrence number
+    private Map<String,Integer> extractPlaceholders(String pattern)
     {
+        Map<String,Integer> placeholderMap = new HashMap<>();
+        Pattern p = Pattern.compile("%\\p{Alpha}%", Pattern.CASE_INSENSITIVE);
+        Matcher m = p.matcher(pattern);
+        int value = 0;
+        while(m.find()) {
+            value++;
+            String tmpStr = pattern.substring(m.start(),m.end());
+            placeholderMap.put(tmpStr, value);
+        }
+        return placeholderMap;
+    }
+
+    //find matching patterns and return responses based on matching patterns (default response if no match)
+    public void respond(String userInput)
+    {
+        if(userInput.equals(prevInput) && prevResponse!=null) {
+            speak(prevResponse);
+            return;
+        }
+        else if(prevInput!=null && prevResponse==null) {
+            speak( DEFAULT_RESPONSES[new Random().nextInt(DEFAULT_RESPONSES.length)] );
+            return;
+        }
+
+        //store to previous input
+        prevInput = userInput;
+
         List<String> responseVec = new ArrayList<>();
         boolean patternFound = false;
 
         //check for matching patterns for every pattern/response
-        for(PatternResponse patternResponseElement : patternResponseVec)
-        {
-            String pattern = patternResponseElement.getPattern();
-            String response = patternResponseElement.getResponse();
+        for(PatternResponse patternResponseElement : patternResponseVec) {
+            //tmp pattern and response
+            String tmpPattern = patternResponseElement.getPattern();
+            String tmpResponse = patternResponseElement.getResponse();
 
             //process placeholders in pattern
-            Hashtable<String,Integer> placeholderHT = extractPlaceholders(pattern);
-            Set<String> placeholderStrSet = placeholderHT.keySet();
-            Iterator<String> itr = placeholderStrSet.iterator();
-            while(itr.hasNext()) {
-                String placeholderStr = itr.next();
-                pattern = pattern.replace(placeholderStr, "(\\w+)");
+            Map<String, Integer> placeholderMap = extractPlaceholders(tmpPattern);
+            Set<Map.Entry<String, Integer>> placeholderEntrySet = placeholderMap.entrySet();
+            for(Map.Entry<String, Integer> entry : placeholderEntrySet) {
+                tmpPattern = tmpPattern.replace(entry.getKey(), "(\\w+)");
             }
 
             //actually find pattern in user input, also take care of placeholders
-            Pattern p = Pattern.compile(pattern, Pattern.CASE_INSENSITIVE);
-            Matcher m = p.matcher(inputBuff);
+            Pattern p = Pattern.compile(tmpPattern, Pattern.CASE_INSENSITIVE);
+            Matcher m = p.matcher(userInput);
             if(m.find()) {
                 //well, pattern is found...
                 patternFound = true;
                 //apply placeholders (if any) into response
-                if(placeholderHT.size()>0) {
-                    placeholderStrSet = placeholderHT.keySet();
-                    itr = placeholderStrSet.iterator();
-                    while(itr.hasNext()) {
-                        String placeholderStr = itr.next();
-                        response = response.replace(placeholderStr, m.group(placeholderHT.get(placeholderStr)));
+                if(placeholderMap.size() > 0) {
+                    for (Map.Entry<String, Integer> entry : placeholderEntrySet) {
+                        tmpResponse = tmpResponse.replace(entry.getKey(), m.group(entry.getValue()));
                     }
                 }
                 //add to the response vector
-                responseVec.add(response);
+                responseVec.add(tmpResponse);
             }
         }
 
         //if no pattern is found just print a random default response
         if(!patternFound) {
-            Random rand = new Random();
-            String defaultResponse = DEFAULT_RESPONSES[rand.nextInt(DEFAULT_RESPONSES.length)];
-            return defaultResponse;
+            prevResponse = null;
+            speak( DEFAULT_RESPONSES[new Random().nextInt(DEFAULT_RESPONSES.length)] );
+            return;
         }
 
         //sort multiple responses (in case multiple patterns detected) and combine them to one response
         String[] responseArr = responseVec.toArray(new String[responseVec.size()]);
-        Sort.sortStrings(responseArr);
-        String response = "";
+        if(!SortChecker.checkStringArr(responseArr)) {
+            Sort.sortStringArr(responseArr);
+        }
+        String fullResponse = "";
         for(String responseElement : responseArr) {
-            response += responseElement + " ";
+            fullResponse += responseElement + " ";
         }
 
+        //store to previous response
+        prevResponse = fullResponse;
+
         //print the response
-        return response;
+        speak(fullResponse);
     }
 
-    //print the words
-    public void speak(final String words)
+    //speak
+    private void speak(String words)
     {
-        System.out.println(DOCTOR_STR + words);
+        if(!isSimulation) {
+            System.out.println(DOCTOR_STR + words);
+        }
     }
 
     //greet the user
@@ -147,5 +167,15 @@ public class Doctor
     public void respondNoInput()
     {
         speak(NO_INPUT_RESPONSE);
+    }
+
+    public void simulationOn()
+    {
+        isSimulation = true;
+    }
+
+    public void simulationOff()
+    {
+        isSimulation = false;
     }
 }

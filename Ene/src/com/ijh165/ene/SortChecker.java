@@ -8,7 +8,7 @@ package com.ijh165.ene;
 public class SortChecker
 {
     //methods
-    public static boolean checkString(String[] data)
+    public static boolean checkStringArr(String[] data)
     {
         for(int i=0; i<data.length-1; i++)
             if(data[i].compareTo(data[i+1])>0)

@@ -9,7 +9,7 @@ import java.util.Arrays;
  */
 public class Sort
 {
-    public static void sortStrings(String[] data)
+    public static void sortStringArr(String[] data)
     {
         Arrays.sort(data);
     }
