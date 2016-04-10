@@ -1,7 +1,7 @@
 package com.ijh165.assignment3;
 
 /**
- * Class name: Timer.java
+ * Class name: Timer
  * Description: This is the timer class to do the timing. Timing measurement is done in nanoseconds to be accurate.
  * Created by IvanJonathan on 2016-02-21.
  */

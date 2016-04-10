@@ -5,7 +5,7 @@ import java.util.*;
 import java.util.regex.*;
 
 /**
- * Class name: Doctor.java
+ * Class name: Doctor
  * Description: This is the doctor class used to model a doctor and coordinate the doctor interactions.
  * Created by IvanJonathan on 2016-02-21.
  */

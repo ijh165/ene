@@ -3,7 +3,7 @@ package com.ijh165.assignment3;
 import java.util.List;
 
 /**
- * Class name: SortChecker.java
+ * Class name: SortChecker
  * Description: This is the sort checker class used to verify that the data is sorted at all times
  * Created by IvanJonathan on 2016-02-21.
  */

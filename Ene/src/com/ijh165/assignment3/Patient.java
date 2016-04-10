@@ -3,7 +3,7 @@ package com.ijh165.assignment3;
 import java.util.Scanner;
 
 /**
- * Class name: Patient.java
+ * Class name: Patient
  * Description: This is the patient class used to model a patient and coordinate the user interactions.
  * Created by IvanJonathan on 2016-02-21.
  */

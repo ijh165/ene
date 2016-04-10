@@ -1,7 +1,7 @@
 package com.ijh165.assignment3;
 
 /**
- * Class name: PatternResponse.java
+ * Class name: PatternResponse
  * Description: This is the pattern class used to store a pattern and the response. Note that I implement
  *              this class as "PatternResponse" as Java already has a built in class named "Pattern".
  * Created by IvanJonathan on 2016-02-21.
