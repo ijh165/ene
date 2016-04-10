@@ -1,4 +1,4 @@
-package com.ijh165.ene;
+package com.ijh165.assignment3;
 
 /**
  * Class name: Timer.java

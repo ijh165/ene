@@ -1,7 +1,6 @@
-package com.ijh165.ene;
+package com.ijh165.assignment3;
 
 import java.io.*;
-import java.util.*;
 
 /**
  * Class name: A3
