@@ -7,14 +7,14 @@
 \blove\b -> I'm not capable of love.
 \bstudy\b|\bstudying\b -> Even as an AI, I hate studying. Studying = student + dying.
 \byou\sare\scute\b|\byou\sare\sbeautiful\b -> Aww... *blushes*
-\bi\sam\safraid\sof\s%X%\b -> You are being paranoid...
+\bchocolate\b -> I've always wanted to try chocolate but I don't have a physical mouth...
+\bafraid\b|\bsscared\b -> You are being paranoid...
+\bi\sam\safraid\sof\s%X%\b -> What makes %X% so scary?
 \bi\shate\s%X%\b -> What makes you hate %X%? Did %X% do anything wrong?
 \bi\slove\s%X%\b -> Oh boy, it's the mating season for humans isn't it! But is %X% even a person?
-\bi\slike\s%X%\b -> What makes you like %X%?
+\bi\slike\s%X%\b -> Acknowledged.
 \bi\slost\smy\s%X%\b -> Are you sure you're not just forgetting where you last put your %X%?
 \b%A%\sis\s%B%\b -> Why do you think that %A% is %B%?
-\b%A%\sis\snot\s%B%\b -> Why do you think that %A% is not %B%?
 \b%A%\sare\s%B%\b -> Why do you think that %A% are %B%?
-\b%A%\sare\snot\s%B%\b -> Why do you think that %A% are not %B%?
 \b%B%\shates\s%A%\b -> Really? Did %A% do anything wrong to %B%?
 \bdefine\s%X%\b -> Unfortunately, I do not know what %X% is. Perhaps you could search it on google?

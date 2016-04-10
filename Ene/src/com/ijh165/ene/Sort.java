@@ -1,6 +1,7 @@
 package com.ijh165.ene;
 
-import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * Class name: Sort.java
@@ -9,8 +10,9 @@ import java.util.Arrays;
  */
 public class Sort
 {
-    public static void sortStringArr(String[] data)
+    //sorts a list of strings lexicographically
+    public static void sortStringList(List<String> data)
     {
-        Arrays.sort(data);
+        Collections.sort(data);
     }
 }

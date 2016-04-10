@@ -1,5 +1,7 @@
 package com.ijh165.ene;
 
+import java.util.List;
+
 /**
  * Class name: SortChecker.java
  * Description: This is the sort checker class used to verify that the data is sorted at all times
@@ -7,12 +9,14 @@ package com.ijh165.ene;
  */
 public class SortChecker
 {
-    //methods
-    public static boolean checkStringArr(String[] data)
+    //check if the string list is sorted lexicographically
+    public static boolean checkStringList(List<String> data)
     {
-        for(int i=0; i<data.length-1; i++)
-            if(data[i].compareTo(data[i+1])>0)
+        for(int i=0; i<data.size()-1; i++) {
+            if( data.get(i).compareTo(data.get(i+1)) > 0 ) {
                 return false;
+            }
+        }
         return true;
     }
 }

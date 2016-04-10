@@ -1,6 +1,7 @@
 package com.ijh165.ene;
 
 import java.io.*;
+import java.util.*;
 
 /**
  * Class name: A3
@@ -34,6 +35,9 @@ public class A3
 
     public static void main(String[] args)
     {
+        //for debugging only
+        /*testSortRelatedClasses();*/
+
         //initialize objects
         doctor = new Doctor();
         patient = new Patient();
@@ -91,7 +95,7 @@ public class A3
     }
 
     //create log files and store them in the "log" folder
-    public static void initLogFiles()
+    private static void initLogFiles()
     {
         try {
             //create timing log file (or replace if already exist)
@@ -113,7 +117,7 @@ public class A3
     }
 
     //time violations logging
-    public static void logTimingViolation(String input)
+    private static void logTimingViolation(String input)
     {
         try {
             //prepare writer
@@ -177,4 +181,18 @@ public class A3
             System.exit(1);
         }
     }
+
+    //testing BinarySearch class (for debugging purposes only)
+    /*private static void testSortRelatedClasses()
+    {
+        String[] strArr = {"pear","apple","grape","candy","banana"};
+        List<String> strList = Arrays.asList(strArr);
+        Sort.sortStringList(strList);
+        assert SortChecker.checkStringList(strList);
+        assert strList.get(0).equals("apple");
+        for(String element : strArr) {
+            assert BinarySearch.searchStringList(strList, element) >= 0;
+        }
+        assert BinarySearch.searchStringList(strList, "steak") < 0;
+    }*/
 }

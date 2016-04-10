@@ -85,7 +85,7 @@ public class Doctor
             return;
         }
 
-        //store to previous input
+        //update previous input string
         prevInputStr = input;
 
         //variables
@@ -129,17 +129,18 @@ public class Doctor
             return;
         }
 
-        //sort (if needed) and display responses
-        String[] responseArr = responseList.toArray(new String[responseList.size()]);
-        if(!SortChecker.checkStringArr(responseArr)) {
-            Sort.sortStringArr(responseArr);
+        //sort (if needed)
+        if(!SortChecker.checkStringList(responseList)) {
+            Sort.sortStringList(responseList);
         }
-        for(String responseElement : responseArr) {
+
+        //display responses
+        for(String responseElement : responseList) {
             speak(responseElement);
         }
 
-        //store to previous response
-        prevResponseList = Arrays.asList(responseArr);
+        //update previous response list
+        prevResponseList = responseList;
     }
 
     //speak

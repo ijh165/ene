@@ -19,11 +19,12 @@
 
     CAUTION:
     -Do not forget spaces before and after "->"!
+    -Do not use "|", "\b", and "\s" on responses! These are meant only for patterns!
     -Do not attempt to use the "|" operator for any pattern which contains placeholder words!
     -Do not use the same placeholder more than once in a pattern! Using them more than once in a response is fine.
         -like "\b%X%\s%X%\b -> ..." is not ok
         -something like "\b%X%\b -> %X% and %X%" however is ok
-    -Do not use "|", "\b", and "\s" on responses! These are meant only for patterns!
+
     -I know that "|", "\b", and "\s" look a lot like java regex and you maybe tempted to use some other java regex stuff
     but please do not put any other weird characters besides these 4 in any of the patterns, not even another java regex
     stuffs like "(\w+)","\d", etc.!
@@ -99,49 +100,47 @@
 
     9. Flirting pattern
     \byou\sare\scute\b|\byou\sare\sbeautiful\b -> Aww... *blushes*
-    Description: Any sentence either containing the word "you" followed by the word "are" followed by the word "cute" OR
+    Description: Any sentence containing either the word "you" followed by the word "are" followed by the word "cute" OR
                  the word "you" followed by the word "are" followed by the word "beautiful".
 
-    10. Fear pattern
-    \bi\sam\safraid\sof\s%X%\b -> You are being paranoid...
+    10. Chocolate pattern
+    \bchocolate\b -> I've always wanted to try chocolate but I don't have a physical mouth...
+    Description: Any sentence containing the word "chocolate".
+
+    11. Fear pattern
+    \bafraid\b|\bsscared\b -> You are being paranoid...
+    Description: Any sentence containing the word "afraid" or "scared".
+
+    12. I am afraid of X pattern
+    \bi\sam\safraid\sof\s%X%\b -> What makes %X% so scary?
     Description: Any sentence containing the word "i" followed by the word "am" followed by the word "afraid"
                  followed by the word "of" followed by any placeholder word %X%.
 
-    11. I hate X pattern
+    13. I hate X pattern
     \bi\shate\s%X%\b -> What makes you hate %X%? Did %X% do anything wrong?
     Description: Any sentence containing the word "i" followed by the word "hate" followed by any placeholder word %X%.
 
-    12. I love X pattern
+    14. I love X pattern
     \bi\slove\s%X%\b -> Oh boy, it's the mating season for humans isn't it! But is %X% even a person?
     Description: Any sentence containing the word "i" followed by the word "love" followed by any placeholder word %X%.
 
-    13. I like X pattern
-    \bi\slike\s%X%\b -> What makes you like %X%?
+    15. I like X pattern
+    \bi\slike\s%X%\b -> Acknowledged.
     Description: Any sentence containing the word "i" followed by the word "like" followed by any placeholder word %X%.
 
-    14. I lost my X pattern
+    16. I lost my X pattern
     \bi\slost\smy\s%X%\b -> Are you sure you're not just forgetting where you last put your %X%?
     Description: Any sentence containing the word "i" followed by the word "lost" followed by the word "my"
                  followed by any placeholder word %X%.
 
-    15. A is B pattern
+    17. A is B pattern
     \b%A%\sis\s%B%\b -> Why do you think that %A% is %B%?
     Description: Any sentence containing any placeholder word %A% followed by the word "is"
                  followed by any placeholder word %B%.
 
-    16. A is not B pattern
-    \b%A%\sis\snot\s%B%\b -> Why do you think that %A% is not %B%?
-    Description: Any sentence containing any placeholder word %A% followed by the word "is not"
-                 followed by any placeholder word %B%.
-
-    17. A are B
+    18. A are B
     \b%A%\sare\s%B%\b -> Why do you think that %A% are %B%?
     Description: Any sentence containing any placeholder word %A% followed by the word "are"
-                 followed by any placeholder word %B%.
-
-    18. A are not B
-    \b%A%\sare\snot\s%B%\b -> Why do you think that %A% are not %B%?
-    Description: Any sentence containing any placeholder word %A% followed by the word "are not"
                  followed by any placeholder word %B%.
 
     19. B hates A pattern
