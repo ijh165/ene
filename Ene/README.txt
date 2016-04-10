@@ -11,7 +11,8 @@
 
     Each line of this file contains a patterns and the corresponding response of the format:
         <pattern> -> <response>
-    where pattern is the pattern and response is the corresponding response.
+    Where <pattern> is the pattern and <response> is the corresponding response.
+    The patterns are case insensitive (will make more sense later in the examples).
 
     The following can or cannot be used in patterns:
     "|": the OR operator ("foo|bar" means contains the string "foo" or "bar" or both)
@@ -26,8 +27,10 @@
 
     1. Take a look at the following pattern/response pair:
         \bhate\b -> Hate is not a good thing.
-    -In here "\bhate\b" is the pattern and "Hate is not a good thing." is the corresponding response
-    -For any input that contains the word "hate", the program will print the response "Hate is not a good thing."
+    -In here "\bhate\b" is the pattern and "Hate is not a good thing." is the corresponding response.
+    -For any input that contains the word "hate", the program will produce the response "Hate is not a good thing."
+    -As mentioned previously patterns are case insensitive which means that inputs such as "Hate" or "hATe" or "haTE"
+    will also produce the response "Hate is not a good thing." and this case insensitivity happens for all patterns.
     -"\bhate\b" means a word boundary, followed by the string "hate", followed by another word boundary.
     -If you just put "hate" without the word boundaries ("\b"), inputs such as "asdhatejaxzks" will also match the
     pattern and produce the corresponding response "Hate is not a good thing." because the input string contains "hate"
@@ -35,7 +38,7 @@
 
     2. Another one with the OR operator "|":
         \bhi\b|\bhello\b|\bhey\b -> How are you? What would you like to talk about today?
-    -For any input that contains the word "hi", "hello", or "hey", the program will print the response
+    -For any input that contains the word "hi", "hello", or "hey", the program will produce the response
     "How are you? What would you like to talk about today?"
     -Again, putting only "hi|hello|hey" without the word boundaries ("\b") will cause inputs such as
     "shit" and "nothing" to also match the pattern and produce the corresponding response. So if the user input
