@@ -19,15 +19,15 @@ public class Doctor
     private static final String DOCTOR_STR = "Doctor: ";
     private static final String GREETING = "Hello! ^_^";
     private static final String GOODBYE = "Goodbye! Have a nice day! ^_^";
-    private static final String NO_INPUT_RESPONSE = "You didn't enter any input, please type again!";
-    private static final String[] DEFAULT_RESPONSES = {"I didn't quite get that.",
-                                                    "I'm not sure I understand what you're saying.",
-                                                    "Sorry, I didn't get that."};
+    private static final String NO_INPUT_RESPONSE = "...? Say something!";
+    private static final String[] DEFAULT_RESPONSES = {"Sorry, I can't understand what you're saying!",
+                                                       "I don't know what to say... My creator didn't expect you to type that!",
+                                                       "I didn't quite get that. Tell me something else!"};
 
     //attributes
     private List<PatternResponse> patternResponseVec;
-    private String prevInput;
-    private String prevResponse;
+    private String prevInputStr;
+    private List<String> prevResponseList;
     private boolean isSimulation;
 
     //constructor
@@ -35,8 +35,8 @@ public class Doctor
     {
         super();
         patternResponseVec = new ArrayList<>();
-        prevInput = null;
-        prevResponse = null;
+        prevInputStr = null;
+        prevResponseList = null;
         isSimulation = false;
     }
 
@@ -72,21 +72,24 @@ public class Doctor
     }
 
     //find matching patterns and return responses based on matching patterns (default response if no match)
-    public void respond(String userInput)
+    public void respond(String input)
     {
-        if(userInput.equals(prevInput) && prevResponse!=null) {
-            speak(prevResponse);
-            return;
-        }
-        else if(prevInput!=null && prevResponse==null) {
-            speak( DEFAULT_RESPONSES[new Random().nextInt(DEFAULT_RESPONSES.length)] );
+        if(input.equals(prevInputStr)) {
+            if(prevResponseList!=null) {
+                for (String responseElement : prevResponseList) {
+                    speak(responseElement);
+                }
+            } else {
+                speak( DEFAULT_RESPONSES[new Random().nextInt(DEFAULT_RESPONSES.length)] );
+            }
             return;
         }
 
         //store to previous input
-        prevInput = userInput;
+        prevInputStr = input;
 
-        List<String> responseVec = new ArrayList<>();
+        //variables
+        List<String> responseList = new ArrayList<>();
         boolean patternFound = false;
 
         //check for matching patterns for every pattern/response
@@ -104,7 +107,7 @@ public class Doctor
 
             //actually find pattern in user input, also take care of placeholders
             Pattern p = Pattern.compile(tmpPattern, Pattern.CASE_INSENSITIVE);
-            Matcher m = p.matcher(userInput);
+            Matcher m = p.matcher(input);
             if(m.find()) {
                 //well, pattern is found...
                 patternFound = true;
@@ -115,32 +118,28 @@ public class Doctor
                     }
                 }
                 //add to the response vector
-                responseVec.add(tmpResponse);
+                responseList.add(tmpResponse);
             }
         }
 
         //if no pattern is found just print a random default response
         if(!patternFound) {
-            prevResponse = null;
+            prevResponseList = null;
             speak( DEFAULT_RESPONSES[new Random().nextInt(DEFAULT_RESPONSES.length)] );
             return;
         }
 
-        //sort multiple responses (in case multiple patterns detected) and combine them to one response
-        String[] responseArr = responseVec.toArray(new String[responseVec.size()]);
+        //sort (if needed) and display responses
+        String[] responseArr = responseList.toArray(new String[responseList.size()]);
         if(!SortChecker.checkStringArr(responseArr)) {
             Sort.sortStringArr(responseArr);
         }
-        String fullResponse = "";
         for(String responseElement : responseArr) {
-            fullResponse += responseElement + " ";
+            speak(responseElement);
         }
 
         //store to previous response
-        prevResponse = fullResponse;
-
-        //print the response
-        speak(fullResponse);
+        prevResponseList = Arrays.asList(responseArr);
     }
 
     //speak
@@ -151,29 +150,34 @@ public class Doctor
         }
     }
 
-    //greet the user
+    //greet the user (never a simulation)
     public void greet()
     {
+        simulationOff();
         speak(GREETING);
     }
 
-    //say goodbye to the user
+    //say goodbye to the user (never a simulation)
     public void goodbye()
     {
+        simulationOff();
         speak(GOODBYE);
     }
 
-    //print no input respond
+    //display no input respond (never a simulation)
     public void respondNoInput()
     {
+        simulationOff();
         speak(NO_INPUT_RESPONSE);
     }
 
+    //turn on isSimulation boolean
     public void simulationOn()
     {
         isSimulation = true;
     }
 
+    //turn off isSimulation boolean
     public void simulationOff()
     {
         isSimulation = false;

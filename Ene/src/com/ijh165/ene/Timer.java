@@ -2,30 +2,30 @@ package com.ijh165.ene;
 
 /**
  * Class name: Timer.java
- * Description: This is the timer class to do the timing.
+ * Description: This is the timer class to do the timing. Timing measurement is done in nanoseconds to be accurate.
  * Created by IvanJonathan on 2016-02-21.
  */
 public class Timer
 {
-    //error msg constants
-    private static final String NEG_TIMING_ERR = "stopTimeInMillis - startTimeInMillis is negative!";
+    //exception msg constants
+    private static final String NEG_TIMING_ERR = "stopTimeInNanoSec - startTimeInNanoSec is negative!";
 
     //attributes
-    private long startTimeInMillis;
-    private long stopTimeInMillis;
+    private long startTimeInNanoSec;
+    private long stopTimeInNanoSec;
     private boolean stopped;
 
     //constructor
     public Timer()
     {
-        startTimeInMillis = stopTimeInMillis = 0;
+        startTimeInNanoSec = stopTimeInNanoSec = 0;
         stopped = false;
     }
 
     //start
     public void start()
     {
-        startTimeInMillis = System.currentTimeMillis();
+        startTimeInNanoSec = System.nanoTime();
         stopped = false;
     }
 
@@ -33,7 +33,7 @@ public class Timer
     public void stop()
     {
         if(!stopped) {
-            stopTimeInMillis = System.currentTimeMillis();
+            stopTimeInNanoSec = System.nanoTime();
             stopped = true;
         }
     }
@@ -41,16 +41,16 @@ public class Timer
     //reset
     public void reset()
     {
-        startTimeInMillis = stopTimeInMillis = 0;
+        startTimeInNanoSec = stopTimeInNanoSec = 0;
         stopped = false;
     }
 
     //getters
-    public long getRecordedTime() throws Exception
+    public long getRecordedTimeInNanoSec() throws Exception
     {
-        if(startTimeInMillis > stopTimeInMillis) {
+        if(startTimeInNanoSec > stopTimeInNanoSec) {
             throw new Exception(NEG_TIMING_ERR);
         }
-        return stopTimeInMillis - startTimeInMillis;
+        return stopTimeInNanoSec - startTimeInNanoSec;
     }
 }
