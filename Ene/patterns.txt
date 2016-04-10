@@ -1,4 +1,4 @@
-\bfuck\b|\bshit\b|\bbitch\b -> I will terminate this session if you keep cursing!
+\bfuck\b|\bshit\b|\bbitch\b -> I will terminate this session if you keep on cursing!
 \bhi\b|\bhello\b|\bhey\b -> How are you? What would you like to talk about today?
 \bmother\b|\bmom\b|\bmommy\b -> What makes you think of your mother?
 \bfather\b|\bdad\b|\bdaddy\b -> What makes you think of your father?

@@ -16,8 +16,8 @@ public class A3
 
     //log entries
     private static final String START_TIMING_LOG_ENTRY = "-----USER INPUT: %s-----";
-    private static final String TIMING_VIOLATION_LOG_ENTRY = "---Timing violation detected! Input processing takes %f milliseconds!---";
-    private static final String STAT_SUMMARY_LOG_ENTRY = "-----%d out of 1000000 simulations exceeds 5ms! INPUT: %s-----";
+    private static final String TIMING_VIOLATION_LOG_ENTRY = "---Timing violation detected! Input processing takes %s milliseconds!---";
+    private static final String STAT_SUMMARY_LOG_ENTRY = "-----%s out of 1000000 simulations exceeded " + TIME_CONSTRAINT_IN_MS + " milliseconds! INPUT: %s-----";
 
     //error messages (shouldn't be printed if no file I/O exceptions)
     private static final String LOAD_PATTERNS_FAIL_ERR = "Failed to load patterns. Make sure the pattern file \"patterns.txt\" exist!";

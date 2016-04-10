@@ -1,8 +1,10 @@
-================= PLEASE READ ALL OF THIS DOCUMENTATION BEFORE CHANGING ANYTHING IN THE PATTERN FILE!! =================
+======================================================== README ========================================================
 
 ************************************************************************************************************************
 
 1. Documentation of the pattern file format
+
+    !!!!!!!! READ ALL OF THIS ESPECIALLY THE "CAUTION" SECTION IF YOU WANT TO EDIT THE PATTERN FILE !!!!!!!!
 
     The file of the name "patterns.txt" is the file containing each of the patterns and corresponding response.
     Keep this file in the base directory (the directory where you run this program).
@@ -11,24 +13,14 @@
         <pattern> -> <response>
     where pattern is the pattern and response is the corresponding response.
 
-    Explanation on weird characters ("\b" and "\s" both counts as 1 character not 2 characters!):
+    The following can or cannot be used in patterns:
     "|": the OR operator ("foo|bar" means contains the string "foo" or "bar" or both)
-    "\b": word boundary (the character that starts or ends a word)
+    "\b": word boundary (character that starts or ends a word)
     "\s": white space (space, newline, tab, etc)
     "%<any alphabetic character>%": placeholders (e.g. %X%)
 
-    CAUTION:
-    -Do not forget spaces before and after "->"!
-    -Do not use "|", "\b", and "\s" on responses! These are meant only for patterns!
-    -Do not attempt to use the "|" operator for any pattern which contains placeholder words!
-    -Do not use the same placeholder more than once in a pattern! Using them more than once in a response is fine.
-        -like "\b%X%\s%X%\b -> ..." is not ok
-        -something like "\b%X%\b -> %X% and %X%" however is ok
-
-    -I know that "|", "\b", and "\s" look a lot like java regex and you maybe tempted to use some other java regex stuff
-    but please do not put any other weird characters besides these 4 in any of the patterns, not even another java regex
-    stuffs like "(\w+)","\d", etc.!
-    -This should go without a saying but do not put anything else besides "<pattern> -> <response>" in the pattern file!
+    **a word boundary is more formally any character besides a-z, A-Z, 0-9, and the "_" character which can be
+    spaces, newlines, punctuations, etc.
 
     Some examples:
 
@@ -37,18 +29,19 @@
     -In here "\bhate\b" is the pattern and "Hate is not a good thing." is the corresponding response
     -For any input that contains the word "hate", the program will print the response "Hate is not a good thing."
     -"\bhate\b" means a word boundary, followed by the string "hate", followed by another word boundary.
-    -If you just put "hate" without the word boundaries ("\b"), inputs such as "dsara asdhatejaxzks" will also match the
-    pattern and produce the corresponding response because the input string contains the string "hate" as a substring.
+    -If you just put "hate" without the word boundaries ("\b"), inputs such as "asdhatejaxzks" will also match the
+    pattern and produce the corresponding response "Hate is not a good thing." because the input string contains "hate"
+    as a substring. This will make more sense in the second example.
 
     2. Another one with the OR operator "|":
         \bhi\b|\bhello\b|\bhey\b -> How are you? What would you like to talk about today?
-    -For any input that contains the word "hi", "hello", or "hey",
-    the program will print the response "How are you? What would you like to talk about today?"
-    -At this point you may be thinking why can't we just use "hi|hello|hey" and has to include the word boundary.
-    Well if I do that let's say the user enters "nothing" the response "How are you..." will also be produced because
-    "hi" is a substring of "nothing". The word boundary "\b" is actually used to prevent this from happening.
-    -Just like the previous example, putting only "hi|hello|hey" without the word boundaries ("\b") will cause inputs
-    such as "shit", "wqhelloworld", "dsaheydsa" to also match the pattern and produce the corresponding response.
+    -For any input that contains the word "hi", "hello", or "hey", the program will print the response
+    "How are you? What would you like to talk about today?"
+    -Again, putting only "hi|hello|hey" without the word boundaries ("\b") will cause inputs such as
+    "shit" and "nothing" to also match the pattern and produce the corresponding response. So if the user input
+    "nothing", the program will produce the respond "How are you? What would you like to talk about today?" which is
+    not the expected behaviour (we want a sentence that contains the word "hi", "hello", or "hey" not a sentence that
+    contains the substring "hi", "hello", "hey"). The word boundaries are used to prevent this.
 
     3. Last one with placeholders and "\s":
         \bi\slove\s%X%\b -> Oh boy, it's the mating season for humans isn't it! But is %X% even a person?
@@ -59,15 +52,34 @@
     -For example if the user inputs "i love coding" the program will produce the response
     "Oh boy, it's the mating season for humans isn't it! But is coding even a person?"
 
+    CAUTION:
+    1. Do not forget spaces before and after "->"!
+        -IF YOU GET NULL POINTER EXCEPTION RIGHT AFTER STARTING THE PROGRAM IT IS MOST LIKELY BECAUSE OF THIS!
+    2. Do not use "|", "\b", and "\s" on responses! These are meant only for patterns!
+    3. Do not attempt to use the "|" operator for any pattern which contains placeholder words!
+        -for example don't do "\bfoo\s%X%|bar\s%X%\b -> ..."
+        -IF YOU GET NULL POINTER EXCEPTION AFTER ENTERING SOME INPUT IT IS MOST LIKELY BECAUSE OF THIS!
+    4. Do not use the same placeholder more than once in a pattern! Using them more than once in a response is fine.
+        -like "\b%X%\s%X%\b -> ..." is not ok
+        -something like "\b%X%\b -> %X% and %X%" however is ok
+    5. I do not recommend using special characters ("*", "&", ";" and any other characters beside letters and numbers)
+       in any of the patterns but if you do wish to then please escape them with the backslash character ("\").
+        -for example if you want a pattern that matches any sentence containing "20%" then put "\b20\%\b" as the pattern
+        -more examples: if you want the "*" character then do "\*", if you want the "+" character then do "\+"
+        -you can escape "\" itself by doing "\\"
+        -do not escape special characters in responses (the "\" will also be printed if you do)
+        -UGLY STUFF COULD HAPPEN IF YOU DON"T ESCAPE SPECIAL CHARACTERS!
+    6. I know "|", "\b", and "\s" are actually java regex stuff and you maybe tempted to use some other java regex stuff
+       but please do not put any other java regex stuffs like "(\w+)","\d", etc. in any of the patterns. This is mainly
+       because I use those in my underlying program. And again UGLY STUFF COULD HAPPEN IF YOU DO USE THOSE!
+    7. This should go without a saying but don't put anything else beside "<pattern> -> <response>" in the pattern file!
+
 ************************************************************************************************************************
 
 2. Documentation of each pattern
 
-    First of all, please keep in mind that these patterns are case insensitive.
-    Only the patterns though! the responses are still case sensitive.
-
     1. Angry pattern
-    \bfuck\b|\bshit\b|\bbitch\b -> I will terminate this session if you keep cursing!
+    \bfuck\b|\bshit\b|\bbitch\b -> I will terminate this session if you keep on cursing!
     Description: Any sentence containing the word "fuck", "shit", or "bitch".
 
     2. Greeting pattern
@@ -166,6 +178,14 @@
 
 4. About the timing violation reporting...
 
-    Running this program will produce the file "timing_violation_log.txt" which contains timing violation log entries.
+    Running the program will produce the file "timing_violation_log.txt" which contains timing violation log entries.
+    Timing violation almost never occurs.
+    Inputting strings that matches lots of patterns increase the chance of getting a timing violation.
+
+************************************************************************************************************************
+
+5. How to quit...
+
+    Type "exit" to quit the program (case insensitive so "eXiT" would also work).
 
 ************************************************************************************************************************
