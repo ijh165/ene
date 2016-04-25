@@ -1,5 +1,8 @@
 ======================================================== README ========================================================
 
+This java program called "ene" is an AI that provides psychological comfort to the user (pretty much like ELIZA).
+The name "ene" comes from an anime character...
+
 ************************************************************************************************************************
 
 1. Documentation of the pattern file format

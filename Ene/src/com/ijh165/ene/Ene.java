@@ -1,13 +1,13 @@
-package com.ijh165.assignment3;
+package com.ijh165.ene;
 
 import java.io.*;
 
 /**
- * Class name: A3
+ * Class name: Ene
  * Description: This is the class that contains the main method.
  * Created by IvanJonathan on 2016-02-21.
  */
-public class A3
+public class Ene
 {
     //time constraint and exit message
     private static final long TIME_CONSTRAINT_IN_MS = 5;

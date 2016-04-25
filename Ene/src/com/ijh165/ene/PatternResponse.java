@@ -1,4 +1,4 @@
-package com.ijh165.assignment3;
+package com.ijh165.ene;
 
 /**
  * Class name: PatternResponse
