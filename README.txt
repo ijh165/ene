@@ -17,7 +17,7 @@ The name "ene" comes from an anime character...
     Where <pattern> is the pattern and <response> is the corresponding response.
     The patterns are case insensitive (will make more sense later in the examples).
 
-    The following can or cannot be used in patterns:
+    The following can be used in patterns:
     "|": the OR operator ("foo|bar" means contains the string "foo" or "bar" or both)
     "\b": word boundary (character that starts or ends a word)
     "\s": white space (space, newline, tab, etc)
